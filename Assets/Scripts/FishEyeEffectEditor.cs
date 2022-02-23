@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.ImageEffects;
 
 public class FishEyeEffectEditor : MonoBehaviour
 {
@@ -11,28 +10,37 @@ public class FishEyeEffectEditor : MonoBehaviour
     public GameObject camera1;
     public GameObject camera2;
     // Fisheye components of the cameras
-    private Fisheye fishEye1;
-    private Fisheye fishEye2;
+    public UnityStandardAssets.ImageEffects.Fisheye fishEye1;
+    public UnityStandardAssets.ImageEffects.Fisheye fishEye2;
 
     // Initial positions of cameras
     private Vector3 initialPos1;
     private Vector3 initialPos2;
 
+    // Initial values of the sliders
+    public float initialFishEyeValue = 0.25f;
+    public float initialSeparationValue = 0.25f;
+
     // Maximum values
     public float maxFishEyeValue = 1.5f;
-    public float maxSeparationValue = 10.0f;
+    public float maxSeparationValue = 10.0f;    
 
     // Start is called before the first frame update
     void Start()
     {
-        initialPos1 = camera1.transform.position;
-        initialPos2 = camera2.transform.position;
+        initialPos1 = camera1.transform.localPosition;
+        initialPos2 = camera2.transform.localPosition;
 
-        fishEye1 = camera1.GetComponent<Fisheye>();
-        fishEye2 = camera2.GetComponent<Fisheye>();
+        // Set initial slider values to the ones set
+        sliderEffect.value = initialFishEyeValue;
+        sliderSeparation.value = initialSeparationValue;
+        UpdateSliderValues();
+        UpdateSeparationValue();
 
         Debug.Log(camera1);
         Debug.Log(camera2);
+        Debug.Log(fishEye1);
+        Debug.Log(fishEye2);
     }
 
     // Update is called once per frame
@@ -58,7 +66,7 @@ public class FishEyeEffectEditor : MonoBehaviour
     void UpdateSeparationValue()
     {
         // Edit offset of cameras
-        camera1.transform.position = new Vector3( sliderSeparation.value * maxSeparationValue + initialPos1.x, initialPos1.y, initialPos1.z);
-        camera2.transform.position = new Vector3(-sliderSeparation.value * maxSeparationValue + initialPos2.x, initialPos1.y, initialPos1.z);
+        camera1.transform.localPosition = new Vector3( sliderSeparation.value * maxSeparationValue, initialPos1.y, initialPos1.z);
+        camera2.transform.localPosition = new Vector3(-sliderSeparation.value * maxSeparationValue, initialPos1.y, initialPos1.z);
     }
 }
